@@ -1,0 +1,187 @@
+# use enums for [Languages!],[AssociateType!] 
+# automate import UserOrderByInput and JobOrderByInput - GraphQL Import and ToolKit
+
+type Query{
+    users(query: String, first: Int, skip: Int, after: String, orderBy: UserOrderByInput): [User!]!
+    jobs(query: String, first: Int, skip: Int, after: String, orderBy: JobOrderByInput): [Job!]!
+    me: User!
+    myJobs(query: String, first: Int, skip: Int, after: String, orderBy: JobOrderByInput): [Job!]!
+    myJobsPosted(query: String, first: Int, skip: Int, after: String, orderBy: JobOrderByInput):[Job!]!
+    user(id: ID!): User
+    job(id: ID!): Job
+}
+
+type Mutation{
+    loginUser(data: LoginUserInput): UserAuthPayload!
+    createUser(data: CreateUserInput!): UserAuthPayload!
+    createJob(data: CreateJobInput!): Job!
+    deleteUser: User!
+    deleteJob(id: ID!): Job!
+    updateUser(data: UpdateUserInput!): User!
+    updatePassword(password:String!): User!
+    updateJob(id:ID!, data: UpdateJobInput!): Job!
+    acceptJob(id: ID!): Job!
+}
+
+type UserAuthPayload{
+    token: String!
+    user: User!
+}
+
+type Subscription{
+    job(clientId: ID, associateId: ID): JobSubscriptionPayload!
+    myJobs: JobSubscriptionPayload!
+    myJobsPosted: JobSubscriptionPayload!
+}
+
+input CreateJobInput{
+    title: String!,
+    description: String!,
+    languages: [String!]!,
+    associateType: String!,
+    date: String!,
+    location: String!,
+    currency: String!,
+    bill: Int!
+}
+
+input LoginUserInput{
+    email: String!,
+    password: String!
+}
+
+input CreateUserInput{
+    name: String!,
+    email: String!,
+    phoneNumber: String!,
+    password: String!
+}
+
+input UpdateUserInput{
+    name: String,
+    email: String,
+    password: String,
+    address: String,
+    phoneNumber: String,
+    available: Boolean,
+    languages: [String!],
+    isAssociate: Boolean,
+    associateTypes: [String!],
+    accumulatedInvoice: Int
+    # should not be able to update your invoice. Create an amdin account. 
+}
+
+input UpdateJobInput{
+    title: String,
+    description: String,
+    languages: [String!],
+    associateType: String,
+    published: Boolean,
+    accepted: Boolean,
+    date: String,
+    location: String,
+    client: String,
+    currency: String,
+    bill: Int,
+}
+
+type User{
+    id: ID!
+    name: String!
+    email: String
+    password: String!
+    address: String
+    phoneNumber: String
+    available: Boolean!
+    languages:[String!]!
+    isAssociate: Boolean!
+    associateTypes: [String!]!
+    jobs:[Job!]!
+    jobsPosted:[Job!]!
+    accumulatedInvoice: Int!
+    # ISO 8601
+    updatedAt: String!
+    createdAt: String!
+}
+
+type Job{
+    id: ID!
+    title: String!
+    description: String!
+    languages:[String!]!
+    associateType: String!
+    published: Boolean!
+    accepted: Boolean!
+    date: String!
+    location: String!
+    client: User!
+    associate: User
+    currency: String!
+    bill: Int!
+    # ISO 8601
+    updatedAt: String!
+    createdAt: String!
+}
+
+enum MutationType{
+    CREATED
+    UPDATED
+    DELETED
+}
+
+type JobSubscriptionPayload{
+    mutation: MutationType!
+    node: Job
+}
+
+enum JobOrderByInput {
+  id_ASC
+  id_DESC
+  title_ASC
+  title_DESC
+  description_ASC
+  description_DESC
+  associateType_ASC
+  associateType_DESC
+  published_ASC
+  published_DESC
+  accepted_ASC
+  accepted_DESC
+  date_ASC
+  date_DESC
+  location_ASC
+  location_DESC
+  currency_ASC
+  currency_DESC
+  bill_ASC
+  bill_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+enum UserOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  email_ASC
+  email_DESC
+  password_ASC
+  password_DESC
+  address_ASC
+  address_DESC
+  phoneNumber_ASC
+  phoneNumber_DESC
+  available_ASC
+  available_DESC
+  isAssociate_ASC
+  isAssociate_DESC
+  accumulatedInvoice_ASC
+  accumulatedInvoice_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}

@@ -1,0 +1,39 @@
+type User {
+    id: ID! @id
+    name: String!
+    email: String! @unique
+    password: String!
+    address: String
+    phoneNumber: String! @unique
+    available: Boolean! @default(value: false)
+    languages:[String!]! @scalarList(strategy: RELATION)
+    isAssociate: Boolean! @default(value: false)
+    associateTypes: [String!]! @scalarList(strategy: RELATION) 
+    jobs:[Job!]! @relation(name: "JobToAssociate")
+    jobsPosted:[Job!]! @relation(name: "ClientToJob", onDelete: CASCADE)
+    accumulatedInvoice: Int! @default(value: 0)
+    updatedAt: DateTime! @updatedAt
+    createdAt: DateTime! @createdAt
+}
+
+type Job {
+    id: ID! @id
+    title: String!
+    description: String!
+    languages:[String!]! @scalarList(strategy: RELATION)
+    associateType: String!
+    published: Boolean! @default(value: true)
+    accepted: Boolean! @default(value: false)
+    date: String!
+    location: String!
+    client: User! @relation(name: "ClientToJob")
+    associate: User @relation(name: "JobToAssociate")
+    currency: String!
+    bill: Int!
+    updatedAt: DateTime! @updatedAt
+    createdAt: DateTime! @createdAt
+}
+
+# type Invoice{}
+
+# type Company{}

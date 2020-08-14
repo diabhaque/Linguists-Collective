@@ -1,0 +1,59 @@
+.header {
+    padding: 1rem 0 3rem;
+}
+
+.title {
+    color: black;
+    font-size: 3rem;
+    text-decoration: none;
+}
+.title:hover {
+    color: black;
+}
+
+.navList {
+    // border: 1px solid black;
+    display: flex;
+    list-style-type: none;
+    margin: 0;
+}
+
+.navItem {
+    color: #999999;
+    font-size: .9rem;
+    margin-right: 1.3rem;
+    text-decoration: none;
+}
+
+.navItem:hover {
+    color: #666666;
+}
+
+.activeNavItem {
+    color: #333333;
+}
+
+.navWhole {
+    display: flex;
+    justify-content: space-between;
+}
+
+.button{
+    background: none!important;
+    border: none;
+    padding: 0!important;
+    color: #999999;
+    font-size: .9rem;
+    margin-right: 1.3rem;
+    text-decoration: none;
+}
+
+.button:hover{
+    color: #666666;
+}
+
+.button:active{
+    border: none;
+    color: black;
+    outline: none;
+}
